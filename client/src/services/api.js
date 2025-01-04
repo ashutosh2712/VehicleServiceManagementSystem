@@ -92,3 +92,19 @@ export const fetchMonthlyRevenue = async () => {
 export const fetchYearlyRevenue = async () => {
   return await axios.get(`${API_BASE_URL}/api/revenues/yearly/`);
 };
+
+//PAYMENT MODULE
+// Calculate total price for repairs of a specific vehicle
+export const calculatePrice = async (vehicleId) => {
+  return await axios.get(
+    `${API_BASE_URL}/api/payments/calculate-price?vehicle_id=${vehicleId}`
+  );
+};
+
+// Simulate a payment for a repair
+export const simulatePayment = async (data) => {
+  return await axios.post(
+    `${API_BASE_URL}/api/payments/simulate-payment/`,
+    data
+  );
+};

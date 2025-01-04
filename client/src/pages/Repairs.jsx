@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { fetchRepairs, addRepair, deleteRepair } from "../services/api";
 import { fetchVehicles } from "../services/api"; // To get the list of vehicles
+import FinalPrice from "../components/FinalPrice";
+import SimulatePayment from "../components/SimulatePayment";
 
 const Repairs = () => {
   const [repairs, setRepairs] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [selectedVehicleId, setSelectedVehicleId] = useState("");
+
   const [newRepair, setNewRepair] = useState({
     component_id: "",
     repair_type: "",
@@ -172,6 +175,19 @@ const Repairs = () => {
           <p>No repairs found for the selected vehicle.</p>
         )}
       </div>
+      {/* Add Final Price and Simulate Payment */}
+      {selectedVehicleId && (
+        <>
+          <FinalPrice vehicleId={selectedVehicleId} />
+          <SimulatePayment
+            vehicleId={selectedVehicleId}
+            onPaymentSuccess={() => {
+              // Refresh repairs or update UI
+              alert("Payment successful!");
+            }}
+          />
+        </>
+      )}
     </div>
   );
 };
@@ -211,6 +227,7 @@ const styles = {
     borderRadius: "4px",
     cursor: "pointer",
   },
+
   list: {
     marginTop: "2rem",
   },

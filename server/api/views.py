@@ -1,12 +1,13 @@
 from django.shortcuts import render
-
+import logging
+logger = logging.getLogger(__name__)
 # Create your views here.
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Sum
 from .models import Component, Vehicle, Repair, Payment, Revenue
-
+from decimal import Decimal
 class ComponentViewSet(viewsets.ViewSet):
     """
     A ViewSet for managing components (register, list, update, and delete) without serializers.
@@ -404,36 +405,43 @@ class PaymentViewSet(viewsets.ViewSet):
         """
         API to simulate payment for a specific repair.
         """
-        repair_id = request.data.get("repair_id")
-        amount_paid = request.data.get("amount_paid")
+        repair_ids = request.data.get("repair_ids")
+        amount_paid = Decimal(request.data.get("amount_paid", 0))
 
-        if not repair_id or amount_paid is None:
-            return Response({"error": "Missing required fields: repair_id or amount_paid"}, status=status.HTTP_400_BAD_REQUEST)
+        if not repair_ids or amount_paid <= 0:
+            return Response({"error": "Missing or invalid repair_ids or amount_paid"}, status=status.HTTP_400_BAD_REQUEST)
 
+        repairs = Repair.objects.filter(pk__in=repair_ids)
+        if repairs.count() != len(repair_ids):
+            return Response({"error": "One or more repairs not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        total_price = sum(Decimal(repair.total_price) for repair in repairs)
+        if amount_paid < total_price:
+            return Response({"error": f"Insufficient amount paid. Required: {total_price}"}, status=status.HTTP_400_BAD_REQUEST)
         try:
-            repair = Repair.objects.get(pk=repair_id)
-        except Repair.DoesNotExist:
-            return Response({"error": "Repair not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        if float(amount_paid) < float(repair.total_price):
-            return Response({"error": "Insufficient amount paid"}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            payment = Payment.objects.create(
-                repair=repair,
-                amount_due=repair.total_price,
-                amount_paid=amount_paid,
-            )
-            return Response(
-                {
-                    "id": payment.id,
+            # Create payments for each repair
+            payments = []
+            for repair in repairs:
+                # Calculate payment for each repair
+                payment_amount = min(amount_paid, Decimal(repair.total_price))
+                payment = Payment.objects.create(
+                    repair=repair,
+                    amount_due=Decimal(repair.total_price),
+                    amount_paid=payment_amount,
+                )
+                payments.append({
                     "repair_id": repair.id,
                     "amount_due": str(payment.amount_due),
                     "amount_paid": str(payment.amount_paid),
                     "payment_date": payment.payment_date,
-                },
-                status=status.HTTP_201_CREATED,
-            )
+                })
+
+                # Deduct payment amount from the total
+                amount_paid -= payment_amount
+
+
+            return Response({"payments": payments}, status=status.HTTP_201_CREATED)
+        
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
