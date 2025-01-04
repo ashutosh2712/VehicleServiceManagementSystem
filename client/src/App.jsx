@@ -5,6 +5,7 @@ import HomePage from "./pages/HomePage";
 import Componenets from "./pages/Componenets";
 import Vehicles from "./pages/Vehicles";
 import Repairs from "./pages/Repairs";
+import Revenue from "./pages/Revenue";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "/repairs",
         element: <Repairs />,
+      },
+      {
+        path: "/revenue",
+        element: <Revenue />,
       },
     ],
   },

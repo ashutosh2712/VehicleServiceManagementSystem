@@ -76,3 +76,19 @@ export const deleteRepair = async (id) => {
     `${API_BASE_URL}/api/repairs/delete-issue/?repair_id=${id}`
   );
 };
+
+// VISULIZATION MANAGEMENT
+// Fetch daily revenue
+export const fetchDailyRevenue = async () => {
+  return await axios.get(`${API_BASE_URL}/api/revenues/daily/`);
+};
+
+// Fetch monthly revenue
+export const fetchMonthlyRevenue = async () => {
+  return await axios.get(`${API_BASE_URL}/api/revenues/monthly/`);
+};
+
+// Fetch yearly revenue
+export const fetchYearlyRevenue = async () => {
+  return await axios.get(`${API_BASE_URL}/api/revenues/yearly/`);
+};
