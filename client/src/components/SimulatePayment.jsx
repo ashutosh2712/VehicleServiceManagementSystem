@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { fetchRepairs, simulatePayment } from "../services/api";
 
-const SimulatePayment = ({ vehicleId, onPaymentSuccess }) => {
+const SimulatePayment = ({ vehicleId, repairsUpdated, onPaymentSuccess }) => {
   const [amountPaid, setAmountPaid] = useState("");
   const [loading, setLoading] = useState(false);
-  const [repairs, setRepairs] = useState([]); // Store repairs for the vehicle
-  const [totalAmount, setTotalAmount] = useState(0); // Total amount due for all repairs
+  const [repairs, setRepairs] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
 
-  // Fetch repairs for the selected vehicle (repairId = vehicleId)
   useEffect(() => {
     const fetchRepairsForVehicle = async () => {
       try {
-        const response = await fetchRepairs(vehicleId); // Assuming repairId is the vehicle ID
+        const response = await fetchRepairs(vehicleId);
         setRepairs(response.data);
 
-        // Calculate the total cost for all repairs
         const total = response.data.reduce(
           (sum, repair) => sum + parseFloat(repair.total_price),
           0
@@ -28,7 +26,7 @@ const SimulatePayment = ({ vehicleId, onPaymentSuccess }) => {
     if (vehicleId) {
       fetchRepairsForVehicle();
     }
-  }, [vehicleId]);
+  }, [vehicleId, repairsUpdated]);
 
   const handlePayment = async () => {
     if (!amountPaid || parseFloat(amountPaid) < totalAmount) {
@@ -36,7 +34,7 @@ const SimulatePayment = ({ vehicleId, onPaymentSuccess }) => {
       return;
     }
 
-    const repairIds = repairs.map((repair) => repair.id); // Collect all repair IDs for the vehicle
+    const repairIds = repairs.map((repair) => repair.id);
     const payload = {
       repair_ids: repairIds,
       amount_paid: parseFloat(amountPaid),

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { calculatePrice } from "../services/api";
 
-const FinalPrice = ({ vehicleId }) => {
+const FinalPrice = ({ vehicleId, repairsUpdated }) => {
   const [totalCost, setTotalCost] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -9,7 +9,7 @@ const FinalPrice = ({ vehicleId }) => {
     if (vehicleId) {
       fetchFinalPrice(vehicleId);
     }
-  }, [vehicleId]);
+  }, [vehicleId, repairsUpdated]);
 
   const fetchFinalPrice = async (id) => {
     setLoading(true);

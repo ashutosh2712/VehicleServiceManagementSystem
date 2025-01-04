@@ -8,6 +8,7 @@ const Repairs = () => {
   const [repairs, setRepairs] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [selectedVehicleId, setSelectedVehicleId] = useState("");
+  const [repairsUpdated, setRepairsUpdated] = useState(0);
 
   const [newRepair, setNewRepair] = useState({
     component_id: "",
@@ -16,7 +17,6 @@ const Repairs = () => {
   });
   const [loading, setLoading] = useState(false);
 
-  // Load vehicles and repairs when the component mounts
   useEffect(() => {
     loadVehicles();
   }, []);
@@ -59,6 +59,7 @@ const Repairs = () => {
       });
       setNewRepair({ component_id: "", repair_type: "", labor_cost: "" });
       loadRepairs(selectedVehicleId);
+      setRepairsUpdated((prev) => prev + 1);
     } catch (error) {
       console.error("Error adding repair:", error);
     }
@@ -68,6 +69,7 @@ const Repairs = () => {
     try {
       await deleteRepair(id);
       loadRepairs(selectedVehicleId);
+      setRepairsUpdated((prev) => prev + 1);
     } catch (error) {
       console.error("Error deleting repair:", error);
     }
@@ -178,9 +180,13 @@ const Repairs = () => {
       {/* Add Final Price and Simulate Payment */}
       {selectedVehicleId && (
         <>
-          <FinalPrice vehicleId={selectedVehicleId} />
+          <FinalPrice
+            vehicleId={selectedVehicleId}
+            repairsUpdated={repairsUpdated}
+          />
           <SimulatePayment
             vehicleId={selectedVehicleId}
+            repairsUpdated={repairsUpdated}
             onPaymentSuccess={() => {
               // Refresh repairs or update UI
               alert("Payment successful!");
