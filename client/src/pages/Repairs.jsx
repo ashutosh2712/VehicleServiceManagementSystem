@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { fetchRepairs, addRepair, deleteRepair } from "../services/api";
+import {
+  fetchRepairs,
+  addRepair,
+  deleteRepair,
+  fetchComponents,
+} from "../services/api";
 import { fetchVehicles } from "../services/api"; // To get the list of vehicles
 import FinalPrice from "../components/FinalPrice";
 import SimulatePayment from "../components/SimulatePayment";
@@ -8,6 +13,7 @@ const Repairs = () => {
   const [repairs, setRepairs] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [selectedVehicleId, setSelectedVehicleId] = useState("");
+  const [components, setComponents] = useState([]);
   const [repairsUpdated, setRepairsUpdated] = useState(0);
 
   const [newRepair, setNewRepair] = useState({
@@ -19,6 +25,7 @@ const Repairs = () => {
 
   useEffect(() => {
     loadVehicles();
+    loadComponents();
   }, []);
 
   const loadVehicles = async () => {
@@ -27,6 +34,15 @@ const Repairs = () => {
       setVehicles(response.data);
     } catch (error) {
       console.error("Error fetching vehicles:", error);
+    }
+  };
+
+  const loadComponents = async () => {
+    try {
+      const response = await fetchComponents();
+      setComponents(response.data);
+    } catch (error) {
+      console.error("Error fetching components:", error);
     }
   };
 
@@ -103,15 +119,20 @@ const Repairs = () => {
       {selectedVehicleId && (
         <div style={styles.form}>
           <h2>Add Repair</h2>
-          <input
-            type="text"
-            placeholder="Component ID"
+          <select
             value={newRepair.component_id}
             onChange={(e) =>
               setNewRepair({ ...newRepair, component_id: e.target.value })
             }
-            style={styles.input}
-          />
+            style={styles.select}
+          >
+            <option value="">-- Select Component --</option>
+            {components.map((component) => (
+              <option key={component.id} value={component.id}>
+                {component.name}
+              </option>
+            ))}
+          </select>
           <select
             value={newRepair.repair_type}
             onChange={(e) =>
@@ -157,7 +178,7 @@ const Repairs = () => {
             <tbody>
               {repairs.map((repair) => (
                 <tr key={repair.id} style={styles.tableCell}>
-                  <td>{repair.component_id}</td>
+                  <td>{repair.component_name}</td>
                   <td>{repair.repair_type}</td>
                   <td>{repair.labor_cost}</td>
                   <td>{repair.total_price}</td>

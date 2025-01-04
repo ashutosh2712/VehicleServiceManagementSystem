@@ -329,6 +329,7 @@ class RepairViewSet(viewsets.ViewSet):
                     "id": repair.id,
                     "vehicle_id": repair.vehicle.id,
                     "component_id": repair.component.id,
+                    "component_name": repair.component.name,
                     "repair_type": repair.repair_type,
                     "labor_cost": str(repair.labor_cost),
                     "total_price": str(repair.total_price),

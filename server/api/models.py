@@ -32,7 +32,7 @@ class Vehicle(models.Model):
 class Repair(models.Model):
     id = models.BigAutoField(primary_key=True)
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='repairs')
-    component = models.ForeignKey(Component, on_delete=models.CASCADE, related_name='repairs')  # Placeholder for a foreign key to a "Component" table if it exists
+    component = models.ForeignKey(Component, on_delete=models.CASCADE, related_name='repairs')  
     repair_type = models.CharField(
         max_length=10,
         choices=[('new', 'New'), ('repair', 'Repair')],
