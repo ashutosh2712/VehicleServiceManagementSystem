@@ -29,3 +29,28 @@ export const deleteComponent = async (component_id) => {
     `${API_BASE_URL}/api/components/delete-component/?component_id=${component_id}`
   );
 };
+
+// Fetch all vehicles
+export const fetchVehicles = async () => {
+  return await axios.get(`${API_BASE_URL}/api/vehicles/list/`);
+};
+
+// Add a new vehicle
+export const addVehicle = async (data) => {
+  return await axios.post(`${API_BASE_URL}/api/vehicles/add/`, data);
+};
+
+// Update vehicle status
+export const updateVehicleStatus = async (vehicle_id, data) => {
+  return await axios.put(
+    `${API_BASE_URL}/api/vehicles/update-status/?vehicle_id=${vehicle_id}`,
+    data
+  );
+};
+
+// Delete a vehicle
+export const deleteVehicle = async (vehicle_id) => {
+  return await axios.delete(
+    `${API_BASE_URL}/api/vehicles/delete/?vehicle_id=${vehicle_id}`
+  );
+};
