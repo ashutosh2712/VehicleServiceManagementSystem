@@ -2,6 +2,7 @@ import axios from "axios";
 
 const API_BASE_URL = "http://127.0.0.1:8000"; // Backend URL
 
+// COMPONENTS MANAGEMENT
 // Fetch all components
 export const fetchComponents = async () => {
   return await axios.get(`${API_BASE_URL}/api/components/list-components`);
@@ -30,6 +31,7 @@ export const deleteComponent = async (component_id) => {
   );
 };
 
+// VEHICLES MANAGEMENT
 // Fetch all vehicles
 export const fetchVehicles = async () => {
   return await axios.get(`${API_BASE_URL}/api/vehicles/list/`);
@@ -52,5 +54,25 @@ export const updateVehicleStatus = async (vehicle_id, data) => {
 export const deleteVehicle = async (vehicle_id) => {
   return await axios.delete(
     `${API_BASE_URL}/api/vehicles/delete/?vehicle_id=${vehicle_id}`
+  );
+};
+
+// REPAIR MANAGEMENT
+// Fetch all repairs for a specific vehicle
+export const fetchRepairs = async (vehicleId) => {
+  return await axios.get(`${API_BASE_URL}/api/repairs/list-issues`, {
+    params: { vehicle_id: vehicleId },
+  });
+};
+
+// Add a new repair
+export const addRepair = async (data) => {
+  return await axios.post(`${API_BASE_URL}/api/repairs/add-issue/`, data);
+};
+
+// Delete a repair
+export const deleteRepair = async (id) => {
+  return await axios.delete(
+    `${API_BASE_URL}/api/repairs/delete-issue/?repair_id=${id}`
   );
 };

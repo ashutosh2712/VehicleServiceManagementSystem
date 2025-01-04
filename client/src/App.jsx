@@ -4,6 +4,7 @@ import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
 import Componenets from "./pages/Componenets";
 import Vehicles from "./pages/Vehicles";
+import Repairs from "./pages/Repairs";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: "/vehicles",
         element: <Vehicles />,
+      },
+      {
+        path: "/repairs",
+        element: <Repairs />,
       },
     ],
   },
