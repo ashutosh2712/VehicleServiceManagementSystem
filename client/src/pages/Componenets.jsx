@@ -5,6 +5,7 @@ import {
   updateComponent,
   deleteComponent,
 } from "../services/api";
+import { toast } from "react-toastify";
 
 const Componenets = () => {
   const [components, setComponents] = useState([]);
@@ -41,6 +42,7 @@ const Componenets = () => {
     try {
       await addComponent(newComponent);
       setNewComponent({ name: "", type: "", price: "" });
+      toast.success("Component added successfully!");
       loadComponents();
     } catch (error) {
       console.error("Error adding component:", error);
@@ -55,6 +57,7 @@ const Componenets = () => {
     try {
       await updateComponent(id, editComponent);
       setEditComponent(null);
+      toast.success("Component updated successfully!");
       loadComponents();
     } catch (error) {
       console.error("Error updating component:", error);
@@ -65,6 +68,7 @@ const Componenets = () => {
     try {
       await deleteComponent(id);
       loadComponents();
+      toast.success("Component deleted successfully!");
     } catch (error) {
       console.error("Error deleting component:", error);
     }
@@ -254,7 +258,7 @@ const styles = {
     textAlign: "center",
   },
   tableHeader: {
-    backgroundColor: "#f4f4f4",
+    backgroundColor: "#c7c4c4",
     fontWeight: "bold",
     fontSize: "1.2rem",
   },

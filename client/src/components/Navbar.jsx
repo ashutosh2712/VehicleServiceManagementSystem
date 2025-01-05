@@ -42,6 +42,7 @@ const styles = {
     padding: "1rem 2rem",
     backgroundColor: "#333",
     color: "#fff",
+    height: "fit-content",
   },
   logo: {
     fontSize: "1.5rem",
@@ -52,6 +53,7 @@ const styles = {
     listStyle: "none",
     gap: "1rem",
   },
+
   link: {
     textDecoration: "none",
     color: "#fff",

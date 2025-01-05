@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchRepairs, simulatePayment } from "../services/api";
+import { toast } from "react-toastify";
 
 const SimulatePayment = ({ vehicleId, repairsUpdated, onPaymentSuccess }) => {
   const [amountPaid, setAmountPaid] = useState("");
@@ -44,7 +45,7 @@ const SimulatePayment = ({ vehicleId, repairsUpdated, onPaymentSuccess }) => {
     setLoading(true);
     try {
       const response = await simulatePayment(payload);
-      alert("Payment successful!");
+      toast.success("Payment successful!");
       setAmountPaid("");
       if (onPaymentSuccess) {
         onPaymentSuccess();
@@ -52,29 +53,31 @@ const SimulatePayment = ({ vehicleId, repairsUpdated, onPaymentSuccess }) => {
       console.log("Payment response:", response.data);
     } catch (error) {
       console.error("Error simulating payment:", error);
-      alert("Payment failed.");
+      toast.error("Error simulating payment. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div>
+    <div style={styles.feeSimulate}>
       <h3>Simulate Payment</h3>
-      <input
-        type="number"
-        placeholder="Enter amount paid"
-        value={amountPaid}
-        onChange={(e) => setAmountPaid(e.target.value)}
-        style={{ marginRight: "1rem", padding: "0.5rem" }}
-      />
-      <button
-        style={styles.payButton}
-        onClick={handlePayment}
-        disabled={loading}
-      >
-        {loading ? "Processing..." : "Pay"}
-      </button>
+      <div>
+        <input
+          type="number"
+          placeholder="Enter amount paid"
+          value={amountPaid}
+          onChange={(e) => setAmountPaid(e.target.value)}
+          style={{ marginRight: "1rem", padding: "0.5rem" }}
+        />
+        <button
+          style={styles.payButton}
+          onClick={handlePayment}
+          disabled={loading}
+        >
+          {loading ? "Processing..." : "Pay"}
+        </button>
+      </div>
     </div>
   );
 };
@@ -87,6 +90,12 @@ const styles = {
     border: "none",
     borderRadius: "4px",
     cursor: "pointer",
+  },
+  feeSimulate: {
+    display: "flex",
+    gap: "1rem",
+    flexDirection: "column",
+    minWidth: "fit-content",
   },
 };
 

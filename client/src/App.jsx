@@ -6,6 +6,9 @@ import Componenets from "./pages/Componenets";
 import Vehicles from "./pages/Vehicles";
 import Repairs from "./pages/Repairs";
 import Revenue from "./pages/Revenue";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -38,6 +41,7 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
+      <ToastContainer position="top-right" theme="dark" autoClose={3000} />
     </>
   );
 }

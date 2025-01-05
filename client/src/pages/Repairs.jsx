@@ -200,7 +200,7 @@ const Repairs = () => {
       </div>
       {/* Add Final Price and Simulate Payment */}
       {selectedVehicleId && (
-        <>
+        <div style={styles.feeCalc}>
           <FinalPrice
             vehicleId={selectedVehicleId}
             repairsUpdated={repairsUpdated}
@@ -213,7 +213,7 @@ const Repairs = () => {
               alert("Payment successful!");
             }}
           />
-        </>
+        </div>
       )}
     </div>
   );
@@ -264,13 +264,19 @@ const styles = {
     textAlign: "center",
   },
   tableHeader: {
-    backgroundColor: "#f4f4f4",
+    backgroundColor: "#c7c4c4",
     fontWeight: "bold",
     fontSize: "1.2rem",
   },
   tableCell: {
     border: "1px solid #ddd",
     padding: "0.5rem",
+  },
+  feeCalc: {
+    marginTop: "2rem",
+    display: "flex",
+    gap: "1rem",
+    flexDirection: "column",
   },
 };
 

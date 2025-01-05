@@ -5,6 +5,7 @@ import {
   updateVehicleStatus,
   deleteVehicle,
 } from "../services/api";
+import { toast } from "react-toastify";
 
 const Vehicles = () => {
   const [vehicles, setVehicles] = useState([]);
@@ -44,6 +45,7 @@ const Vehicles = () => {
     try {
       await addVehicle(newVehicle);
       setNewVehicle({ vehicle_id: "", owner_name: "", issue_description: "" });
+      toast.success("Vehicle added successfully!");
       loadVehicles();
     } catch (error) {
       console.error("Error adding vehicle:", error);
@@ -53,6 +55,7 @@ const Vehicles = () => {
   const handleUpdateStatus = async (id, newStatus) => {
     try {
       await updateVehicleStatus(id, { status: newStatus });
+      toast.success("Vehicle status updated successfully!");
       loadVehicles();
     } catch (error) {
       console.error("Error updating vehicle status:", error);
@@ -62,6 +65,7 @@ const Vehicles = () => {
   const handleDelete = async (id) => {
     try {
       await deleteVehicle(id);
+      toast.success("Vehicle deleted successfully!");
       loadVehicles();
     } catch (error) {
       console.error("Error deleting vehicle:", error);
@@ -203,7 +207,7 @@ const styles = {
     textAlign: "center",
   },
   tableHeader: {
-    backgroundColor: "#f4f4f4",
+    backgroundColor: "#c7c4c4",
     fontWeight: "bold",
     fontSize: "1.2rem",
   },
