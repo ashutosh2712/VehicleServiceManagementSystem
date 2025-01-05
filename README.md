@@ -33,15 +33,75 @@
 <h2>Prerequisites</h2>
 <p>Ensure you have the following installed:</p>
 <ul>
-  <li><a href="https://www.python.org/">Python 3.8+</a></li>
-  <li><a href="https://nodejs.org/">Node.js 14+</a></li>
+  <li><a href="https://www.python.org/">Python 3.10+</a></li>
+  <li><a href="https://nodejs.org/">Node.js 18+</a></li>
   <li><a href="https://www.docker.com/">Docker</a></li>
   <li><a href="https://git-scm.com/">Git</a></li>
 </ul>
 
 ---
+<h2>Running the Application with Docker</h2>
 
-<h2>Installation and Setup</h2>
+<h3>Prerequisites</h3>
+<ul>
+  <li>Ensure you have Docker and Docker Compose installed on your machine.</li>
+  <li>Clone the repository to your local machine:</li>
+  <pre><code>git clone https://github.com/your-username/vehicle-service-management.git</code></pre>
+</ul>
+
+<h3>Steps to Run the Application</h3>
+<ol>
+  <li><strong>Navigate to the project directory:</strong>
+    <pre><code>cd your-project</code></pre>
+  </li>
+  <li><strong>Build and start the Docker containers:</strong>
+    <pre><code>docker-compose up --build</code></pre>
+    This will:
+    <ul>
+      <li>Start the PostgreSQL database container.</li>
+      <li>Start the Django backend container.</li>
+      <li>Start the React frontend container.</li>
+    </ul>
+  </li>
+  <li><strong>Access the application:</strong>
+    <ul>
+      <li><strong>React Frontend:</strong> <a href="http://localhost:5173" target="_blank">http://localhost:5173</a> (if running in development mode)</li>
+      <li><strong>React Frontend (Production):</strong> <a href="http://localhost" target="_blank">http://localhost</a> (if using Nginx for production build)</li>
+      <li><strong>Django Backend:</strong> <a href="http://localhost:8000" target="_blank">http://localhost:8000</a></li>
+      <li><strong>PostgreSQL Database:</strong> Accessible on port <code>5432</code>.</li>
+    </ul>
+  </li>
+</ol>
+
+<h3>Stopping the Application</h3>
+<p>To stop the running containers:</p>
+<pre><code>docker-compose down</code></pre>
+
+<h3>Managing the Database</h3>
+<p>To access the PostgreSQL database from the host machine:</p>
+<pre><code>psql -h localhost -p 5432 -U postgres -d vehicle_service_db</code></pre>
+<p>Use the following credentials:</p>
+<ul>
+  <li><strong>Username:</strong> <code>postgres</code></li>
+  <li><strong>Password:</strong> <code>VehiclePostgres@123</code></li>
+</ul>
+
+<h3>Rebuilding the Containers</h3>
+<p>If you make changes to the code and need to rebuild the containers:</p>
+<pre><code>docker-compose up --build</code></pre>
+
+<h3>Docker Volumes</h3>
+<p>The PostgreSQL data is stored in a Docker volume named <code>postgres_data</code>. This ensures that database data persists even if the container is stopped or recreated.</p>
+
+<h3>Common Issues</h3>
+<ul>
+  <li>If the application does not start, check the container logs for errors:</li>
+  <pre><code>docker logs <container_name></code></pre>
+  <li>Ensure that the ports used in the application (e.g., <code>5173</code>, <code>8000</code>, <code>5432</code>) are not already in use on your host machine.</li>
+</ul>
+    
+  ---
+<h2>Installation and Running the Application Locally</h2>
 
 <h3>1. Clone the Repository</h3>
 <pre>
@@ -89,7 +149,7 @@ python manage.py migrate
   <li><b>Install dependencies:</b></li>
   <pre><code>npm install</code></pre>
   <li><b>Start the React development server:</b></li>
-  <pre><code>npm start</code></pre>
+  <pre><code>npm run dev</code></pre>
 </ol>
 
 <p>The frontend will run at <a href="http://localhost:5173/">http://localhost:5173/</a>.</p>
@@ -104,41 +164,7 @@ python manage.py migrate
 
 ---
 
-<h2>API Endpoints</h2>
-<p><b>1. Component Management:</b></p>
-<ul>
-  <li><b>List Components</b>: <code>GET /api/components/list-componenets/</code></li>
-  <li><b>Add Component</b>: <code>POST /api/components/register-component/</code></li>
-  <li><b>Update Component</b>: <code>PUT /api/components/update-component/?component_id=<id></code></li>
-  <li><b>Delete Component</b>: <code>DELETE /api/components/delet-component/?component_id=<id></code></li>
-</ul>
 
-<p><b>2. Vehicle Management:</b></p>
-<ul>
-  <li><b>List Vehicles</b>: <code>GET /api/vehicles/list/</code></li>
-  <li><b>Add Vehicle</b>: <code>POST /api/vehicles/add/</code></li>
-  <li><b>Update Vehicle Status</b>: <code>PUT /api/vehicles/update-status/?vehicle_id=<id></code></li>
-  <li><b>Delete Vehicle</b>: <code>DELETE /api/vehicles/delete/?vehicle_id=<id></code></li>
-</ul>
-
-<p><b>3. Repair Management:</b></p>
-<ul>
-  <li><b>List Repairs</b>: <code>GET /api/repairs/list-issues/?vehicle_id=<id></code></li>
-  <li><b>Add Repair</b>: <code>POST /api/repairs/add-issue/</code></li>
-  <li><b>Delete Repair</b>: <code>DELETE /api/repairs/delete-isue/?repair_id=<id></code></li>
-</ul>
-
-<p><b>4. Payment Simulation:</b></p>
-<ul>
-  <li><b>Simulate Payment</b>: <code>POST /api/payments/simulate-payment/</code></li>
-</ul>
-
-<p><b>5. Revenue Visualization:</b></p>
-<ul>
-  <li><b>Daily Revenue</b>: <code>GET /api/revenue/daily/</code></li>
-  <li><b>Monthly Revenue</b>: <code>GET /api/revenue/monthly/</code></li>
-  <li><b>Yearly Revenue</b>: <code>GET /api/revenue/yearly/</code></li>
-</ul>
 
 <h2>Usage</h2>
 
