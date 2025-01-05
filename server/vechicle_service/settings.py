@@ -86,8 +86,8 @@ DATABASES = {
         'NAME': 'vehicle_service_db',
         'USER': 'postgres',
         'PASSWORD': 'VehiclePostgres@123',
-        'HOST': 'localhost',  # Use 'db' if running Django in a container within the same Docker network
-        'PORT': '8010',
+        'HOST': 'db',  # Use 'db' if running Django in a container within the same Docker network
+        'PORT': '5432',
     }
 }
 
